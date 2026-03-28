@@ -1,0 +1,3269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOMIFY — Shopify Development Portfolio</title>
+  <meta name="description" content="OOMIFY builds premium Shopify stores, custom experiences, and revenue-focused growth systems for ambitious e-commerce brands.">
+  <style>
+    :root {
+      --bg-primary: #0d0d0d;
+      --bg-secondary: #0f1112;
+      --bg-card: #111111;
+      --bg-soft: rgba(255, 255, 255, 0.03);
+      --accent: #96BF48;
+      --accent-hover: #a8d45a;
+      --text-primary: #ffffff;
+      --text-muted: #8f9499;
+      --text-soft: #bcc0c5;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-strong: rgba(150, 191, 72, 0.22);
+      --glow: 0 0 20px rgba(150, 191, 72, 0.28);
+      --glow-lg: 0 0 48px rgba(150, 191, 72, 0.22);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --radius-pill: 999px;
+      --transition: all 0.35s ease;
+      --container: 1240px;
+      --section-space: 72px;
+      --card-padding: 24px;
+      --grid-gap: 24px;
+      --shadow-card: 0 22px 64px rgba(0, 0, 0, 0.38);
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.24);
+      --nav-height: 78px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(150, 191, 72, 0.08), transparent 24%),
+        radial-gradient(circle at 88% 14%, rgba(95, 140, 255, 0.08), transparent 18%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02), transparent 34%),
+        var(--bg-primary);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 88%);
+      pointer-events: none;
+      opacity: 0.32;
+      z-index: -2;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    summary {
+      font: inherit;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      width: min(100%, var(--container));
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    .section {
+      position: relative;
+      padding: var(--section-space) 0;
+    }
+
+    .section-header {
+      max-width: 760px;
+      margin: 0 auto 44px;
+      text-align: center;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(150, 191, 72, 0.18);
+      background: rgba(150, 191, 72, 0.08);
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.04;
+      letter-spacing: -0.05em;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      max-width: 64ch;
+      margin-inline: auto;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ffffff 0%, #dcedb1 20%, #96BF48 48%, #ffffff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(150,191,72,0.08), transparent 30%);
+      pointer-events: none;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn-row-center {
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 0 24px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: var(--transition);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #0d1305;
+      background: linear-gradient(180deg, #a8d45a, #96BF48);
+      box-shadow: 0 18px 34px rgba(150, 191, 72, 0.18);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: var(--glow-lg);
+      background: linear-gradient(180deg, #b2df63, #9fca4f);
+    }
+
+    .btn-secondary {
+      color: var(--text-primary);
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(150, 191, 72, 0.42);
+      box-shadow: var(--glow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(150,191,72,0.24);
+      background: rgba(150,191,72,0.08);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .reveal,
+    .split-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .parallax-float {
+      will-change: transform;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(13, 13, 13, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-wrap {
+      min-height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--accent);
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      flex: 1 1 260px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link {
+      position: relative;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.96rem;
+      padding-bottom: 4px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: #ffffff;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .nav-cta {
+      min-height: 48px;
+      padding-inline: 20px;
+      flex-shrink: 0;
+    }
+
+    .hero {
+      min-height: calc(100vh - var(--nav-height));
+      display: grid;
+      align-items: center;
+      overflow: clip;
+      padding-top: 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.7rem, 6vw, 5.2rem);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      margin: 18px 0 18px;
+    }
+
+    .hero-text {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      max-width: 58ch;
+      margin-bottom: 24px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 30px;
+      max-width: 620px;
+    }
+
+    .hero-metric {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-metric strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.36rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
+    }
+
+    .hero-metric span {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .hero-stage {
+      position: relative;
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+      perspective: 1600px;
+      perspective-origin: 50% 50%;
+      transform-style: preserve-3d;
+      isolation: isolate;
+    }
+
+    .hero-stage-glow {
+      position: absolute;
+      width: min(76vw, 500px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 32%, rgba(194, 230, 116, 0.85), rgba(150,191,72,0.34) 34%, rgba(85, 110, 255, 0.12) 50%, transparent 72%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.08), transparent 42%);
+      filter: blur(60px);
+      opacity: 0.48;
+      z-index: 0;
+    }
+
+    .hero-grid-ring,
+    .hero-grid-ring::before,
+    .hero-grid-ring::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .hero-grid-ring {
+      width: 360px;
+      height: 360px;
+      transform: rotateX(78deg) translateY(40px);
+      border-color: rgba(150,191,72,0.16);
+      z-index: 0;
+    }
+
+    .hero-grid-ring::before {
+      inset: 24px;
+      border-color: rgba(255,255,255,0.06);
+    }
+
+    .hero-grid-ring::after {
+      inset: 58px;
+      border-color: rgba(150,191,72,0.14);
+    }
+
+    .hero-stack {
+      position: relative;
+      width: min(100%, 530px);
+      min-height: 420px;
+      transform-style: preserve-3d;
+      z-index: 2;
+    }
+
+    .layer-card {
+      position: absolute;
+      inset: auto;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(17,17,17,0.96), rgba(10,10,10,0.96));
+      box-shadow: 0 30px 80px rgba(0,0,0,0.42);
+      backdrop-filter: blur(14px);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .layer-back {
+      width: 360px;
+      height: 230px;
+      left: 12px;
+      top: 120px;
+      opacity: 0.9;
+      transform: rotateY(18deg) rotateX(10deg) translateZ(-100px);
+      background: linear-gradient(135deg, rgba(33, 35, 40, 0.95), rgba(12,12,12,0.96));
+    }
+
+    .layer-middle {
+      width: 400px;
+      height: 248px;
+      right: 8px;
+      top: 52px;
+      transform: rotateY(-18deg) rotateX(14deg) translateZ(-20px);
+      background: linear-gradient(180deg, rgba(21, 24, 28, 0.95), rgba(10,10,10,0.95));
+    }
+
+    .hero-dashboard {
+      width: 420px;
+      min-height: 292px;
+      left: 52px;
+      top: 120px;
+      padding: 26px;
+      transform: rotateY(-14deg) rotateX(10deg) translateZ(60px);
+    }
+
+    .hero-dashboard::after {
+      content: "";
+      position: absolute;
+      inset: auto 20px -18px 20px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(150,191,72,0.22), transparent 72%);
+      filter: blur(20px);
+      z-index: -1;
+    }
+
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .dash-label {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+    }
+
+    .dash-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(150,191,72,0.12);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .dash-value {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .dash-value strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.1rem, 6vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .dash-growth {
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding-bottom: 6px;
+    }
+
+    .dash-chart {
+      display: grid;
+      gap: 16px;
+    }
+
+    .chart-line {
+      display: grid;
+      gap: 8px;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #c1c5cb;
+      font-size: 0.82rem;
+    }
+
+    .chart-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .chart-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(150,191,72,0.34), rgba(150,191,72,1));
+      box-shadow: 0 0 18px rgba(150,191,72,0.28);
+      transform-origin: left center;
+      transform: scaleX(0.3);
+    }
+
+    .fill-82 { width: 82%; }
+    .fill-74 { width: 74%; }
+    .fill-68 { width: 68%; }
+
+    .hero-floating-chip {
+      position: absolute;
+      display: grid;
+      gap: 8px;
+      min-width: 150px;
+      padding: 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(19,19,19,0.94), rgba(10,10,10,0.96));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      transform-style: preserve-3d;
+      z-index: 2;
+    }
+
+    .chip-one {
+      right: 2%;
+      top: 10%;
+      transform: translateZ(100px) rotateY(-18deg);
+    }
+
+    .chip-two {
+      left: 0;
+      bottom: 8%;
+      transform: translateZ(70px) rotateY(18deg);
+    }
+
+    .hero-floating-chip span {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-floating-chip strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.38rem;
+    }
+
+    .hero-floating-chip p {
+      color: var(--text-soft);
+      font-size: 0.84rem;
+    }
+
+    .hero-dot,
+    .hero-dot-alt {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .hero-dot {
+      width: 16px;
+      height: 16px;
+      top: 16%;
+      left: 12%;
+      background: rgba(150,191,72,0.88);
+      box-shadow: 0 0 28px rgba(150,191,72,0.34);
+    }
+
+    .hero-dot-alt {
+      width: 10px;
+      height: 10px;
+      right: 12%;
+      bottom: 20%;
+      background: rgba(255,255,255,0.68);
+    }
+
+    .brand-strip {
+      padding-top: 10px;
+    }
+
+    .brand-strip-inner {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand-strip-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-strip-top p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      min-width: max-content;
+      padding: 18px;
+      animation: marquee 24s linear infinite;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 170px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      color: #d8dde3;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .stats-wrap {
+      padding-top: 20px;
+    }
+
+    .stats-card {
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(13,13,13,0.95));
+      overflow: hidden;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .stat-item {
+      position: relative;
+      padding: 30px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .stat-item:last-child {
+      border-bottom: 0;
+    }
+
+    .stat-item::after {
+      content: "";
+      position: absolute;
+      inset: auto 18px 0 18px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(150,191,72,0.46), transparent);
+      transform: scaleX(0.35);
+      transition: var(--transition);
+    }
+
+    .stat-item:hover::after {
+      transform: scaleX(1);
+    }
+
+    .stat-value {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.1rem, 6vw, 3rem);
+      letter-spacing: -0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--grid-gap);
+    }
+
+    .bento-card {
+      padding: 26px;
+      min-height: 100%;
+      transition: var(--transition);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(150,191,72,0.34);
+      box-shadow: var(--shadow-card), var(--glow);
+    }
+
+    .bento-label {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .bento-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.44rem;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
+    }
+
+    .bento-text {
+      color: var(--text-muted);
+      max-width: 46ch;
+    }
+
+    .bento-metric {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #e4e7ea;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .compare-pills {
+      margin-top: 22px;
+    }
+
+    .stack-scene {
+      position: relative;
+      min-height: 280px;
+      margin-top: 20px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+
+    .stack-plane {
+      position: absolute;
+      inset: auto;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(24,24,24,0.96), rgba(12,12,12,0.98));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stack-plane.one {
+      width: 72%;
+      height: 160px;
+      left: 0;
+      bottom: 8px;
+      transform: rotateX(66deg) rotateZ(-16deg) translateZ(-20px);
+    }
+
+    .stack-plane.two {
+      width: 66%;
+      height: 164px;
+      right: 4%;
+      top: 18px;
+      transform: rotateX(68deg) rotateZ(12deg) translateZ(20px);
+    }
+
+    .stack-plane.three {
+      width: 46%;
+      height: 200px;
+      left: 26%;
+      top: 54px;
+      transform: rotateY(-18deg) rotateX(12deg) translateZ(88px);
+      padding: 18px;
+    }
+
+    .stack-plane.three::before,
+    .stack-plane.three::after {
+      content: "";
+      display: block;
+      width: 100%;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+
+    .stack-plane.three::before {
+      height: 12px;
+      width: 58%;
+      background: linear-gradient(90deg, rgba(150,191,72,0.9), rgba(150,191,72,0.22));
+    }
+
+    .stack-plane.three::after {
+      height: 9px;
+      width: 74%;
+    }
+
+    .stack-bars {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stack-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+
+    .stack-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(150,191,72,0.3), rgba(150,191,72,1));
+    }
+
+    .stack-w-82 { width: 82%; }
+    .stack-w-65 { width: 65%; }
+    .stack-w-74 { width: 74%; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--grid-gap);
+    }
+
+    .service-card {
+      padding: 28px;
+      transition: var(--transition);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(150,191,72,0.42);
+      box-shadow: var(--shadow-card), var(--glow);
+    }
+
+    .service-icon {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 22px;
+      border-radius: 18px;
+      background: rgba(150,191,72,0.1);
+      color: var(--accent);
+    }
+
+    .service-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.22rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .service-text {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .service-card:hover .service-link {
+      gap: 14px;
+    }
+
+    .process-grid {
+      display: grid;
+      gap: 28px;
+    }
+
+    .process-step {
+      position: relative;
+      padding: 14px 12px 0;
+      text-align: center;
+    }
+
+    .process-circle {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(150,191,72,0.3);
+      background: linear-gradient(180deg, rgba(24,24,24,0.98), rgba(12,12,12,0.96));
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.04rem;
+      font-weight: 800;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      transition: var(--transition);
+    }
+
+    .process-step:hover .process-circle {
+      background: rgba(150,191,72,0.12);
+      box-shadow: var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .process-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.14rem;
+      margin-bottom: 8px;
+    }
+
+    .process-text {
+      color: var(--text-muted);
+      max-width: 28ch;
+      margin: 0 auto;
+      font-size: 0.96rem;
+    }
+
+    .case-study-grid {
+      display: grid;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .case-study-copy {
+      max-width: 620px;
+    }
+
+    .case-study-copy .section-tag,
+    .case-study-copy .section-title,
+    .case-study-copy .section-subtitle {
+      margin-inline: 0;
+      text-align: left;
+    }
+
+    .case-study-meta {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    [data-case-actions] {
+      margin-top: 24px;
+    }
+
+    .case-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .case-row span {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .case-row strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .case-visual {
+      position: relative;
+      min-height: 520px;
+      perspective: 1500px;
+      transform-style: preserve-3d;
+    }
+
+    .cs-device,
+    .cs-panel,
+    .cs-stats {
+      position: absolute;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(19,19,19,0.98), rgba(10,10,10,0.98));
+      box-shadow: 0 32px 80px rgba(0,0,0,0.42);
+      backdrop-filter: blur(14px);
+      transform-style: preserve-3d;
+    }
+
+    .cs-device {
+      width: min(100%, 480px);
+      min-height: 360px;
+      right: 0;
+      top: 60px;
+      padding: 22px;
+      transform: rotateY(-14deg) rotateX(12deg) translateZ(40px);
+    }
+
+    .cs-browser-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .cs-browser-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .cs-hero-block {
+      padding: 20px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(150,191,72,0.16), rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.02));
+      min-height: 170px;
+      display: grid;
+      align-content: end;
+      margin-bottom: 16px;
+    }
+
+    .cs-hero-block strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    .cs-hero-block span {
+      color: var(--text-soft);
+      font-size: 0.94rem;
+    }
+
+    .cs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cs-grid-card {
+      min-height: 110px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .cs-grid-card strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.22rem;
+      margin-bottom: 8px;
+    }
+
+    .cs-grid-card span {
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+
+    .cs-panel {
+      width: 240px;
+      min-height: 160px;
+      left: 0;
+      top: 22px;
+      padding: 20px;
+      transform: rotateY(18deg) rotateX(8deg) translateZ(70px);
+    }
+
+    .cs-panel h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.14rem;
+      margin-bottom: 12px;
+    }
+
+    .cs-panel ul {
+      display: grid;
+      gap: 10px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .cs-panel li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .cs-panel li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 9px;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(150,191,72,0.36);
+      flex-shrink: 0;
+    }
+
+    .cs-stats {
+      width: 210px;
+      min-height: 148px;
+      left: 32px;
+      bottom: 30px;
+      padding: 18px;
+      transform: rotateY(22deg) translateZ(110px);
+    }
+
+    .cs-stats span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .cs-stats strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .cs-stats p {
+      color: var(--text-soft);
+      font-size: 0.88rem;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--grid-gap);
+    }
+
+    .project-card {
+      min-height: 100%;
+      transition: var(--transition);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-card), var(--glow);
+      border-color: rgba(150,191,72,0.34);
+    }
+
+    .project-media {
+      position: relative;
+      aspect-ratio: 16 / 11;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(150,191,72,0.18), rgba(255,255,255,0.03) 32%, rgba(92,116,255,0.08) 60%, rgba(13,13,13,0.94));
+    }
+
+    .project-media::before,
+    .project-media::after,
+    .project-screen,
+    .project-screen-small {
+      content: "";
+      position: absolute;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .project-media::before {
+      width: 76%;
+      height: 64%;
+      left: 8%;
+      top: 14%;
+    }
+
+    .project-media::after {
+      width: 32%;
+      height: 46%;
+      right: 8%;
+      bottom: 12%;
+      background: linear-gradient(180deg, rgba(150,191,72,0.18), rgba(255,255,255,0.02));
+    }
+
+    .project-screen {
+      width: 54%;
+      height: 20px;
+      left: 12%;
+      top: 22%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(150,191,72,0.95), rgba(150,191,72,0.18));
+    }
+
+    .project-screen-small {
+      width: 44%;
+      height: 14px;
+      left: 12%;
+      top: 32%;
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 24px;
+      min-height: 56%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(10,10,10,0.42) 40%, rgba(10,10,10,0.96));
+      transform: translateY(100%);
+      transition: transform 0.35s ease;
+    }
+
+    .project-card:hover .project-overlay {
+      transform: translateY(0);
+    }
+
+    .project-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.22rem;
+    }
+
+    .project-badge {
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: #0d1305;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .transformation-grid {
+      display: grid;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .compare-card {
+      padding: 28px;
+    }
+
+    .compare-card p {
+      color: var(--text-muted);
+      max-width: 52ch;
+      margin-top: 12px;
+    }
+
+    .compare-visual {
+      position: relative;
+      min-height: 420px;
+      perspective: 1400px;
+    }
+
+    .compare-device,
+    .compare-float {
+      position: absolute;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(19,19,19,0.98), rgba(10,10,10,0.97));
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+      transform-style: preserve-3d;
+    }
+
+    .compare-device.before {
+      width: 58%;
+      height: 280px;
+      left: 0;
+      top: 76px;
+      padding: 18px;
+      transform: rotateY(18deg) rotateX(10deg) translateZ(0);
+      opacity: 0.76;
+    }
+
+    .compare-device.after {
+      width: 62%;
+      height: 320px;
+      right: 0;
+      top: 22px;
+      padding: 20px;
+      transform: rotateY(-14deg) rotateX(10deg) translateZ(90px);
+    }
+
+    .compare-browser {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .compare-browser span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .compare-card-shell {
+      border-radius: 22px;
+      padding: 18px;
+      min-height: 210px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .compare-card-shell strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.28rem;
+      letter-spacing: -0.04em;
+    }
+
+    .compare-line {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .compare-line.accent {
+      background: linear-gradient(90deg, rgba(150,191,72,0.92), rgba(150,191,72,0.2));
+    }
+
+    .compare-float {
+      width: 180px;
+      min-height: 130px;
+      left: 20%;
+      bottom: 12px;
+      padding: 16px;
+      transform: rotateY(16deg) translateZ(110px);
+    }
+
+    .compare-float span {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+    }
+
+    .compare-float strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.9rem;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .compare-float p {
+      color: var(--text-soft);
+      font-size: 0.88rem;
+    }
+
+    .tech-grid {
+      display: grid;
+      gap: var(--grid-gap);
+      align-items: center;
+    }
+
+    .tech-copy .section-header {
+      margin: 0 0 20px;
+      text-align: left;
+    }
+
+    .tech-copy .section-subtitle {
+      margin-inline: 0;
+    }
+
+    .tech-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .tech-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .tech-item strong {
+      font-size: 0.98rem;
+    }
+
+    .tech-item span {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .orbit-scene {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+
+    .orbit-core {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 30% 30%, rgba(194,230,116,0.92), rgba(150,191,72,0.42) 42%, rgba(12,12,12,0.12) 68%, transparent 88%);
+      filter: blur(0.2px);
+      box-shadow: inset 0 0 36px rgba(255,255,255,0.12), 0 0 60px rgba(150,191,72,0.2);
+      z-index: 2;
+    }
+
+    .orbit-core strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: -0.04em;
+      color: #f8ffe9;
+      text-shadow: 0 8px 40px rgba(0,0,0,0.32);
+    }
+
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      transform-style: preserve-3d;
+    }
+
+    .orbit-ring.one {
+      width: 420px;
+      height: 420px;
+      transform: rotateX(74deg);
+    }
+
+    .orbit-ring.two {
+      width: 340px;
+      height: 340px;
+      transform: rotateY(72deg);
+      border-color: rgba(150,191,72,0.16);
+    }
+
+    .orbit-ring.three {
+      width: 280px;
+      height: 280px;
+      transform: rotateX(72deg) rotateY(18deg);
+      border-color: rgba(255,255,255,0.06);
+    }
+
+    .orbit-pill {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 132px;
+      padding: 12px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(14,14,14,0.94);
+      color: #eff2f5;
+      font-weight: 600;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .orbit-pill.one { top: 8%; left: 50%; transform: translateX(-50%) translateZ(50px); }
+    .orbit-pill.two { right: 8%; top: 48%; transform: translateY(-50%) translateZ(28px); }
+    .orbit-pill.three { bottom: 10%; left: 50%; transform: translateX(-50%) translateZ(60px); }
+    .orbit-pill.four { left: 8%; top: 48%; transform: translateY(-50%) translateZ(28px); }
+    .orbit-pill.five { top: 24%; left: 16%; transform: translateZ(36px); }
+    .orbit-pill.six { right: 14%; bottom: 24%; transform: translateZ(46px); }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--grid-gap);
+    }
+
+    .pricing-card {
+      padding: 30px;
+      min-height: 100%;
+      transition: var(--transition);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-card), var(--glow);
+      border-color: rgba(150,191,72,0.36);
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(150,191,72,0.38);
+      box-shadow: 0 20px 56px rgba(0,0,0,0.3), 0 0 44px rgba(150,191,72,0.14);
+      background: linear-gradient(180deg, rgba(150,191,72,0.1), rgba(255,255,255,0.02) 18%, rgba(255,255,255,0.01));
+    }
+
+    .pricing-chip {
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .pricing-card.featured .pricing-chip {
+      background: rgba(150,191,72,0.14);
+      border-color: rgba(150,191,72,0.22);
+      color: var(--accent);
+    }
+
+    .pricing-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .pricing-text {
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .pricing-price strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.8rem;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .pricing-price span {
+      color: var(--text-muted);
+      padding-bottom: 5px;
+    }
+
+    .pricing-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .pricing-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+    }
+
+    .pricing-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 9px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(150,191,72,0.34);
+      flex-shrink: 0;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--grid-gap);
+    }
+
+    .testimonial-card {
+      padding: 30px;
+      min-height: 100%;
+      transition: var(--transition);
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(150,191,72,0.4);
+      box-shadow: var(--shadow-card), var(--glow);
+    }
+
+    .quote-mark {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3rem;
+      line-height: 1;
+      color: rgba(150,191,72,0.28);
+    }
+
+    .testimonial-stars {
+      display: inline-flex;
+      gap: 4px;
+      color: var(--accent);
+      font-size: 1rem;
+      margin-bottom: 18px;
+    }
+
+    .testimonial-text {
+      color: var(--text-soft);
+      font-style: italic;
+      margin-bottom: 20px;
+      max-width: 36ch;
+    }
+
+    .testimonial-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .testimonial-role {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 16px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      overflow: hidden;
+    }
+
+    .faq-item[open] {
+      border-color: rgba(150,191,72,0.24);
+      box-shadow: var(--glow);
+    }
+
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 700;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(150,191,72,0.1);
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .faq-item[open] .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-body {
+      padding: 0 24px 22px;
+      color: var(--text-muted);
+    }
+
+    .cta-banner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(150,191,72,0.1), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        #0d0d0d;
+      padding: 44px 24px;
+      text-align: center;
+    }
+
+    .cta-banner::before {
+      content: "";
+      position: absolute;
+      inset: -36%;
+      background: linear-gradient(120deg, transparent 22%, rgba(150,191,72,0.06) 48%, transparent 72%);
+      animation: shiftGlow 7s linear infinite;
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.1rem, 4vw, 3.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      margin-bottom: 14px;
+    }
+
+    .cta-text {
+      color: var(--text-soft);
+      margin-bottom: 26px;
+      font-size: 1rem;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding-bottom: 30px;
+    }
+
+    .footer-brand {
+      max-width: 340px;
+    }
+
+    .footer-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .footer-copy,
+    .footer-list a,
+    .footer-contact,
+    .footer-location,
+    .footer-note {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .footer-copy {
+      margin: 14px 0 18px;
+    }
+
+    .footer-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-list a,
+    .footer-contact {
+      transition: var(--transition);
+    }
+
+    .footer-list a:hover,
+    .footer-list a:focus-visible,
+    .footer-contact:hover,
+    .footer-contact:focus-visible {
+      color: var(--accent);
+    }
+
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .social-link {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      color: #ffffff;
+      transition: var(--transition);
+    }
+
+    .social-link:hover,
+    .social-link:focus-visible {
+      transform: translateY(-3px);
+      color: var(--accent);
+      border-color: rgba(150,191,72,0.34);
+      box-shadow: var(--glow);
+    }
+
+    .availability {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      color: #d4d8dc;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .availability-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(150,191,72,0.44);
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding: 20px 0 34px;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes shiftGlow {
+      0% {
+        transform: translateX(-24%) rotate(0deg);
+      }
+      100% {
+        transform: translateX(24%) rotate(4deg);
+      }
+    }
+
+    @media (min-width: 480px) {
+      .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 768px) {
+      :root {
+        --section-space: 92px;
+        --card-padding: 30px;
+        --grid-gap: 28px;
+      }
+
+      .hero-grid,
+      .case-study-grid,
+      .transformation-grid,
+      .tech-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat-item {
+        border-bottom: 0;
+        border-right: 1px solid var(--border);
+      }
+
+      .stat-item:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .stat-item:nth-child(-n+2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .bento-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .services-grid,
+      .pricing-grid,
+      .testimonials-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 34px 28px;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .footer-bottom {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      :root {
+        --section-space: 110px;
+        --card-padding: 32px;
+        --grid-gap: 32px;
+      }
+
+      .nav-wrap {
+        flex-wrap: nowrap;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .stat-item,
+      .stat-item:nth-child(-n+2) {
+        border-bottom: 0;
+      }
+
+      .stat-item {
+        border-right: 1px solid var(--border);
+      }
+
+      .stat-item:last-child {
+        border-right: 0;
+      }
+
+      .bento-grid {
+        grid-template-columns: 1.2fr 0.8fr 1fr;
+      }
+
+      .bento-wide {
+        grid-column: span 2;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .process-step::before {
+        content: "";
+        position: absolute;
+        top: 50px;
+        left: calc(50% + 46px);
+        width: calc(100% - 34px);
+        height: 1px;
+        background: linear-gradient(90deg, rgba(150,191,72,0.32), rgba(255,255,255,0.06));
+      }
+
+      .process-step:last-child::before {
+        display: none;
+      }
+
+      .portfolio-grid,
+      .pricing-grid,
+      .testimonials-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .footer-grid {
+        grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .hero-stage {
+        min-height: 620px;
+      }
+
+      .cta-banner {
+        padding: 58px 34px;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero-stage,
+      .case-visual,
+      .compare-visual,
+      .orbit-scene {
+        min-height: 420px;
+      }
+
+      .hero-stack {
+        width: 100%;
+        min-height: 340px;
+      }
+
+      .layer-back {
+        width: 280px;
+        height: 190px;
+        left: 8px;
+        top: 92px;
+      }
+
+      .layer-middle {
+        width: 300px;
+        height: 190px;
+        right: 8px;
+        top: 36px;
+      }
+
+      .hero-dashboard {
+        width: min(100%, 360px);
+        left: 24px;
+        top: 98px;
+      }
+
+      .chip-one,
+      .chip-two {
+        min-width: 132px;
+      }
+
+      .cs-device {
+        width: min(100%, 360px);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stage,
+      .case-visual,
+      .compare-visual,
+      .orbit-scene {
+        min-height: 360px;
+      }
+
+      .hero-stack {
+        min-height: 310px;
+      }
+
+      .layer-back {
+        width: 200px;
+        height: 130px;
+        left: 8px;
+        top: 90px;
+      }
+
+      .layer-middle {
+        width: 220px;
+        height: 136px;
+        right: 0;
+        top: 40px;
+      }
+
+      .hero-dashboard {
+        width: min(100%, 310px);
+        left: 24px;
+        top: 100px;
+        padding: 20px;
+      }
+
+      .chip-one {
+        right: 0;
+        top: 4%;
+      }
+
+      .chip-two {
+        left: 0;
+        bottom: 2%;
+      }
+
+      .case-study-copy .section-title,
+      .case-study-copy .section-subtitle,
+      .tech-copy .section-header,
+      .tech-copy .section-subtitle {
+        text-align: left;
+      }
+
+      .cs-panel,
+      .cs-stats,
+      .compare-float {
+        display: none;
+      }
+
+      .cs-device {
+        width: 100%;
+        top: 26px;
+        transform: none;
+      }
+
+      .compare-device.before {
+        width: 54%;
+        height: 220px;
+      }
+
+      .compare-device.after {
+        width: 60%;
+        height: 250px;
+        top: 24px;
+      }
+
+      .orbit-ring.one {
+        width: 320px;
+        height: 320px;
+      }
+
+      .orbit-ring.two {
+        width: 250px;
+        height: 250px;
+      }
+
+      .orbit-ring.three {
+        width: 210px;
+        height: 210px;
+      }
+
+      .orbit-pill {
+        min-width: 102px;
+        padding: 10px 12px;
+        font-size: 0.86rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="OOMIFY home">OOMIFY</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a class="nav-link" href="#home">Home</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#portfolio">Portfolio</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-primary nav-cta" href="#contact">Hire Me</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow split-reveal">✦ Shopify Expert</div>
+          <h1 class="hero-title split-reveal">I Build <span class="gradient-text">High-Converting</span> Shopify Stores</h1>
+          <p class="hero-text split-reveal">From zero to revenue, OOMIFY designs and develops premium Shopify experiences that feel fast, sell better, and scale with the brand behind them. Strategy, custom development, CRO, and launch systems all in one focused build.</p>
+          <div class="btn-row split-reveal">
+            <a class="btn btn-primary" href="#contact">Start Your Project →</a>
+            <a class="btn btn-secondary" href="#portfolio">View My Work</a>
+          </div>
+          <div class="hero-metrics split-reveal">
+            <div class="hero-metric card">
+              <strong>+127%</strong>
+              <span>Conversion growth on premium rebuilds</span>
+            </div>
+            <div class="hero-metric card">
+              <strong>3.2x</strong>
+              <span>Typical lift in customer journey clarity</span>
+            </div>
+            <div class="hero-metric card">
+              <strong>10/10</strong>
+              <span>Focus on speed, UX, and brand polish</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stage reveal" data-depth="0.08">
+          <div class="hero-stage-glow parallax-float" data-depth="0.12"></div>
+          <div class="hero-grid-ring parallax-float" data-depth="0.18"></div>
+          <div class="hero-dot parallax-float" data-depth="0.25"></div>
+          <div class="hero-dot-alt parallax-float" data-depth="0.16"></div>
+
+          <div class="hero-stack tilt-card" data-tilt>
+            <div class="layer-card layer-back parallax-float" data-depth="0.1"></div>
+            <div class="layer-card layer-middle parallax-float" data-depth="0.14"></div>
+            <article class="layer-card hero-dashboard parallax-float" data-depth="0.22">
+              <div class="dash-top">
+                <div>
+                  <p class="dash-label">Store Revenue</p>
+                </div>
+                <span class="dash-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 7H17V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Up 28.4%
+                </span>
+              </div>
+              <div class="dash-value">
+                <strong>$124,580</strong>
+                <span class="dash-growth">This month</span>
+              </div>
+              <div class="dash-chart">
+                <div class="chart-line">
+                  <div class="chart-head">
+                    <span>Conversion Lift</span>
+                    <span>82%</span>
+                  </div>
+                  <div class="chart-track"><div class="chart-fill fill-82"></div></div>
+                </div>
+                <div class="chart-line">
+                  <div class="chart-head">
+                    <span>AOV Growth</span>
+                    <span>74%</span>
+                  </div>
+                  <div class="chart-track"><div class="chart-fill fill-74"></div></div>
+                </div>
+                <div class="chart-line">
+                  <div class="chart-head">
+                    <span>Retention</span>
+                    <span>68%</span>
+                  </div>
+                  <div class="chart-track"><div class="chart-fill fill-68"></div></div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="hero-floating-chip chip-one parallax-float" data-depth="0.2">
+            <span>Launch Velocity</span>
+            <strong>4 Weeks</strong>
+            <p>Lean, premium builds without bloated theme clutter.</p>
+          </div>
+
+          <div class="hero-floating-chip chip-two parallax-float" data-depth="0.22">
+            <span>Retention UX</span>
+            <strong>+41%</strong>
+            <p>Sharper product storytelling and cleaner buying flow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section brand-strip">
+      <div class="container">
+        <div class="brand-strip-inner reveal">
+          <div class="brand-strip-top">
+            <strong>Built for modern DTC, premium retail, and growth-stage Shopify brands</strong>
+            <p>Strategy-led design systems, custom storefront builds, CRO upgrades, and launch support.</p>
+          </div>
+          <div class="marquee" aria-label="Brand style references">
+            <div class="marquee-track">
+              <span class="brand-pill">LuxeWear Co.</span>
+              <span class="brand-pill">NovaSkin</span>
+              <span class="brand-pill">UrbanThreads</span>
+              <span class="brand-pill">FitFuel</span>
+              <span class="brand-pill">GlowCraft</span>
+              <span class="brand-pill">PetPalace</span>
+              <span class="brand-pill">Aster Labs</span>
+              <span class="brand-pill">Bloom Commerce</span>
+              <span class="brand-pill">LuxeWear Co.</span>
+              <span class="brand-pill">NovaSkin</span>
+              <span class="brand-pill">UrbanThreads</span>
+              <span class="brand-pill">FitFuel</span>
+              <span class="brand-pill">GlowCraft</span>
+              <span class="brand-pill">PetPalace</span>
+              <span class="brand-pill">Aster Labs</span>
+              <span class="brand-pill">Bloom Commerce</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-wrap section" aria-label="Social proof">
+      <div class="container">
+        <div class="stats-card reveal">
+          <div class="stats-grid">
+            <article class="stat-item">
+              <strong class="stat-value counter" data-target="50">0</strong>
+              <p class="stat-label">Stores Built</p>
+            </article>
+            <article class="stat-item">
+              <strong class="stat-value counter" data-target="2" data-prefix="$" data-suffix="M+">0</strong>
+              <p class="stat-label">Revenue Generated for Clients</p>
+            </article>
+            <article class="stat-item">
+              <strong class="stat-value counter" data-target="5" data-suffix="+">0</strong>
+              <p class="stat-label">Years of Shopify Experience</p>
+            </article>
+            <article class="stat-item">
+              <strong class="stat-value counter" data-target="100" data-suffix="%">0</strong>
+              <p class="stat-label">Client Satisfaction Focus</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="capabilities">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Why OOMIFY</span>
+          <h2 class="section-title">Not just another <span class="gradient-text">basic portfolio build</span></h2>
+          <p class="section-subtitle">This version adds stronger depth, premium storytelling, layered 3D scenes, and scroll-led motion so the page feels like a modern agency site instead of a flat layout.</p>
+        </div>
+
+        <div class="bento-grid">
+          <article class="card bento-card bento-wide tilt-card reveal" data-tilt>
+            <span class="bento-label">3D Presentation</span>
+            <h3 class="bento-title">Layered productized presentation with depth, perspective, and interactive tilt</h3>
+            <p class="bento-text">Cards do not just sit on the page. They float, rotate subtly, and react with perspective so the interface feels crafted. This is the kind of visual language that makes service pages feel premium without becoming noisy.</p>
+            <div class="bento-metric">
+              <span class="mini-pill">GSAP ScrollTrigger</span>
+              <span class="mini-pill">3D Perspective</span>
+              <span class="mini-pill">Cursor Parallax</span>
+            </div>
+            <div class="stack-scene">
+              <div class="stack-plane one"></div>
+              <div class="stack-plane two"></div>
+              <div class="stack-plane three">
+                <div class="stack-bars">
+                  <div class="stack-bar"><span class="stack-w-82"></span></div>
+                  <div class="stack-bar"><span class="stack-w-65"></span></div>
+                  <div class="stack-bar"><span class="stack-w-74"></span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card bento-card tilt-card reveal" data-tilt>
+            <span class="bento-label">Premium UX</span>
+            <h3 class="bento-title">Bento-style storytelling blocks</h3>
+            <p class="bento-text">Instead of repeated simple cards, sections now break rhythm with more editorial layouts and stronger visual hierarchy.</p>
+            <div class="bento-metric">
+              <span class="mini-pill">Agency feel</span>
+              <span class="mini-pill">Stronger hierarchy</span>
+            </div>
+          </article>
+
+          <article class="card bento-card tilt-card reveal" data-tilt>
+            <span class="bento-label">Motion System</span>
+            <h3 class="bento-title">Scroll-led reveals and smooth animated depth</h3>
+            <p class="bento-text">The page now has timed entrances, layered motion, and subtle section transitions so it feels alive from first viewport to footer.</p>
+            <div class="bento-metric">
+              <span class="mini-pill">Reveal timelines</span>
+              <span class="mini-pill">Section choreography</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Capabilities</span>
+          <h2 class="section-title">What I Do</h2>
+          <p class="section-subtitle">From brand-led storefront design to advanced Shopify engineering, every service is structured around conversion, speed, and long-term scalability.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="card service-card tilt-card reveal" data-tilt>
+            <div class="service-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <rect x="13" y="4" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <rect x="3" y="13" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <rect x="13" y="13" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Shopify Store Design</h3>
+            <p class="service-text">Premium storefront direction with stronger product storytelling, clearer hierarchy, and polished visual systems built for modern brands.</p>
+            <a class="service-link" href="#contact">Learn More →</a>
+          </article>
+
+          <article class="card service-card tilt-card reveal" data-tilt>
+            <div class="service-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 7L3 12L8 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 7L21 12L16 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13 4L11 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Custom Development</h3>
+            <p class="service-text">Advanced sections, custom landing pages, app integrations, theme architecture, and UX interactions built cleanly for performance and scale.</p>
+            <a class="service-link" href="#contact">Learn More →</a>
+          </article>
+
+          <article class="card service-card tilt-card reveal" data-tilt>
+            <div class="service-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 19H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M7 15L11 11L14 14L20 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 8H20V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Conversion Optimization</h3>
+            <p class="service-text">Sharper customer journeys, better merchandising logic, stronger page structure, and targeted UX improvements that reduce friction.</p>
+            <a class="service-link" href="#contact">Learn More →</a>
+          </article>
+
+          <article class="card service-card tilt-card reveal" data-tilt>
+            <div class="service-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 7V12H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 17V12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.5 9C7.4 7.2 9.4 6 11.7 6C14.7 6 17.2 8 18 10.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M17.5 15C16.6 16.8 14.6 18 12.3 18C9.3 18 6.8 16 6 13.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Store Redesign &amp; Migration</h3>
+            <p class="service-text">Move to Shopify or modernize an existing store with a more premium UX layer, cleaner content structure, and improved performance baseline.</p>
+            <a class="service-link" href="#contact">Learn More →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing-flow">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Workflow</span>
+          <h2 class="section-title">My Process</h2>
+          <p class="section-subtitle">A clear project system that keeps premium Shopify work efficient, aligned, and ready to launch without unnecessary complexity.</p>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-step reveal">
+            <div class="process-circle">01</div>
+            <h3 class="process-title">Discovery</h3>
+            <p class="process-text">Understanding your brand, audience, offer, and conversion goals before a single section is built.</p>
+          </article>
+          <article class="process-step reveal">
+            <div class="process-circle">02</div>
+            <h3 class="process-title">Design</h3>
+            <p class="process-text">Crafting the right layout, hierarchy, and visual direction for a more premium buying experience.</p>
+          </article>
+          <article class="process-step reveal">
+            <div class="process-circle">03</div>
+            <h3 class="process-title">Development</h3>
+            <p class="process-text">Building fast, responsive Shopify code with custom interactions, reusable structure, and clean implementation.</p>
+          </article>
+          <article class="process-step reveal">
+            <div class="process-circle">04</div>
+            <h3 class="process-title">Launch</h3>
+            <p class="process-text">QA, polish, responsive checks, and handoff with support so the store goes live with confidence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="case-study">
+      <div class="container case-study-grid">
+        <div class="case-study-copy reveal">
+          <span class="section-tag">Spotlight Case Study</span>
+          <h2 class="section-title">How a premium rebuild can turn a <span class="gradient-text">slow storefront into a growth engine</span></h2>
+          <p class="section-subtitle">This section adds a richer story layer to the homepage. Instead of only showing portfolios, it shows how the work creates results: better first impression, stronger hierarchy, clearer product communication, and a measurable uplift in revenue quality.</p>
+          <div class="case-study-meta">
+            <div class="case-row">
+              <span>Brand</span>
+              <strong>NovaSkin</strong>
+            </div>
+            <div class="case-row">
+              <span>Scope</span>
+              <strong>Redesign + Shopify 2.0 Build</strong>
+            </div>
+            <div class="case-row">
+              <span>Result</span>
+              <strong>$180K launch revenue + 127% higher conversion</strong>
+            </div>
+          </div>
+          <div class="btn-row" data-case-actions>
+            <a class="btn btn-primary" href="#portfolio">See More Work</a>
+            <a class="btn btn-secondary" href="#contact">Discuss My Store</a>
+          </div>
+        </div>
+
+        <div class="case-visual reveal">
+          <div class="cs-panel tilt-card" data-tilt>
+            <h3>What changed</h3>
+            <ul>
+              <li>Clearer offer framing above the fold</li>
+              <li>Higher-end product presentation</li>
+              <li>Cleaner PDP storytelling and trust cues</li>
+            </ul>
+          </div>
+
+          <div class="cs-device tilt-card" data-tilt>
+            <div class="cs-browser-top">
+              <span class="cs-browser-dot"></span>
+              <span class="cs-browser-dot"></span>
+              <span class="cs-browser-dot"></span>
+            </div>
+            <div class="cs-hero-block">
+              <strong>Luxury skin wellness, reimagined</strong>
+              <span>Sharper hierarchy, stronger visuals, and a landing experience built for high intent traffic.</span>
+            </div>
+            <div class="cs-grid">
+              <div class="cs-grid-card">
+                <strong>+127%</strong>
+                <span>Conversion lift after rebuild</span>
+              </div>
+              <div class="cs-grid-card">
+                <strong>3.4s → 1.7s</strong>
+                <span>Improved perceived page speed</span>
+              </div>
+              <div class="cs-grid-card">
+                <strong>Premium PDP</strong>
+                <span>Story-led product modules</span>
+              </div>
+              <div class="cs-grid-card">
+                <strong>Mobile-first</strong>
+                <span>Better layout rhythm on smaller screens</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-stats tilt-card" data-tilt>
+            <span>Launch Metric</span>
+            <strong>3x</strong>
+            <p>Higher quality return on launch traffic with cleaner product flow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="portfolio">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Selected Projects</span>
+          <h2 class="section-title">Featured Work</h2>
+          <p class="section-subtitle">The portfolio section is also upgraded with stronger perspective, richer overlays, and more premium visual placeholders instead of basic flat blocks.</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">LuxeWear Co.</h3>
+                <span class="project-badge">+127% Conversion Rate</span>
+              </div>
+            </div>
+          </article>
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">NovaSkin</h3>
+                <span class="project-badge">$180K Launch Revenue</span>
+              </div>
+            </div>
+          </article>
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">UrbanThreads</h3>
+                <span class="project-badge">3x ROAS</span>
+              </div>
+            </div>
+          </article>
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">FitFuel Store</h3>
+                <span class="project-badge">+89% AOV</span>
+              </div>
+            </div>
+          </article>
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">PetPalace</h3>
+                <span class="project-badge">Full Redesign</span>
+              </div>
+            </div>
+          </article>
+          <article class="card project-card tilt-card reveal" data-tilt>
+            <div class="project-media">
+              <div class="project-screen"></div>
+              <div class="project-screen-small"></div>
+              <div class="project-overlay">
+                <h3 class="project-title">GlowCraft</h3>
+                <span class="project-badge">Shopify 2.0 Migration</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="transformation">
+      <div class="container transformation-grid">
+        <div class="compare-card card reveal">
+          <span class="section-tag">Transformation View</span>
+          <h2 class="section-title">From flat storefront to <span class="gradient-text">high-trust brand experience</span></h2>
+          <p>This added section helps you sell the service visually. It shows the difference between an ordinary build and a more refined premium execution, which is strong for client trust and portfolio storytelling.</p>
+          <div class="bento-metric compare-pills">
+            <span class="mini-pill">Before / After narrative</span>
+            <span class="mini-pill">Value communication</span>
+            <span class="mini-pill">Higher-ticket positioning</span>
+          </div>
+        </div>
+
+        <div class="compare-visual reveal">
+          <div class="compare-device before tilt-card" data-tilt>
+            <div class="compare-browser"><span></span><span></span><span></span></div>
+            <div class="compare-card-shell">
+              <strong>Before</strong>
+              <div class="compare-line"></div>
+              <div class="compare-line"></div>
+              <div class="compare-line"></div>
+              <div class="compare-line"></div>
+            </div>
+          </div>
+          <div class="compare-device after tilt-card" data-tilt>
+            <div class="compare-browser"><span></span><span></span><span></span></div>
+            <div class="compare-card-shell">
+              <strong>After</strong>
+              <div class="compare-line accent"></div>
+              <div class="compare-line"></div>
+              <div class="compare-line accent"></div>
+              <div class="compare-line"></div>
+              <div class="compare-line accent"></div>
+            </div>
+          </div>
+          <div class="compare-float tilt-card" data-tilt>
+            <span>Outcome</span>
+            <strong>+64%</strong>
+            <p>Lift in trust perception after premium visual upgrade.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="container tech-grid">
+        <div class="tech-copy reveal">
+          <div class="section-header">
+            <span class="section-tag">Tech Stack</span>
+            <h2 class="section-title">Design polish backed by <span class="gradient-text">real Shopify implementation</span></h2>
+            <p class="section-subtitle">This extra section gives the homepage more credibility by showing the technical depth behind the visuals. It keeps the site from feeling like a pure mock portfolio.</p>
+          </div>
+          <div class="tech-list">
+            <div class="tech-item">
+              <strong>Shopify Theme Development</strong>
+              <span>Clean custom sections, app blocks, performance-first structure</span>
+            </div>
+            <div class="tech-item">
+              <strong>GSAP &amp; Motion Design</strong>
+              <span>Scroll-driven reveals, parallax, timing, and high-end interaction</span>
+            </div>
+            <div class="tech-item">
+              <strong>CRO-Led Layout Strategy</strong>
+              <span>Funnel thinking applied to homepage, collection, and PDP flows</span>
+            </div>
+            <div class="tech-item">
+              <strong>Responsive UI Systems</strong>
+              <span>Mobile-first detail without sacrificing desktop presence</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="orbit-scene reveal">
+          <div class="orbit-ring one"></div>
+          <div class="orbit-ring two"></div>
+          <div class="orbit-ring three"></div>
+          <div class="orbit-core"><strong>OOMIFY</strong></div>
+          <div class="orbit-pill one">Liquid</div>
+          <div class="orbit-pill two">GSAP</div>
+          <div class="orbit-pill three">CRO</div>
+          <div class="orbit-pill four">UI Systems</div>
+          <div class="orbit-pill five">Performance</div>
+          <div class="orbit-pill six">Strategy</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Engagement Models</span>
+          <h2 class="section-title">Simple pricing paths for different Shopify needs</h2>
+          <p class="section-subtitle">Since the old file linked Pricing in navigation but did not really present pricing, this new section gives the page a stronger sales structure and a clearer next step.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="card pricing-card tilt-card reveal" data-tilt>
+            <span class="pricing-chip">Starter Refresh</span>
+            <h3 class="pricing-title">Store Polish</h3>
+            <p class="pricing-text">For brands that already have a Shopify store but need sharper sections, premium styling, and cleaner UX.</p>
+            <div class="pricing-price">
+              <strong>$900</strong>
+              <span>starting</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Homepage or landing page redesign</li>
+              <li>Responsive cleanup and polish</li>
+              <li>Faster visual hierarchy and trust improvements</li>
+              <li>Launch-ready QA pass</li>
+            </ul>
+            <a class="btn btn-secondary" href="#contact">Book a Refresh</a>
+          </article>
+
+          <article class="card pricing-card featured tilt-card reveal" data-tilt>
+            <span class="pricing-chip">Most Popular</span>
+            <h3 class="pricing-title">Custom Growth Build</h3>
+            <p class="pricing-text">For brands that want a premium store, deeper product storytelling, motion, and stronger conversion structure from the ground up.</p>
+            <div class="pricing-price">
+              <strong>$2,500</strong>
+              <span>starting</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Custom homepage and key collection/PDP direction</li>
+              <li>Premium animation and interaction layer</li>
+              <li>Custom-coded Shopify sections</li>
+              <li>Conversion-first design system</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Start a Custom Build</a>
+          </article>
+
+          <article class="card pricing-card tilt-card reveal" data-tilt>
+            <span class="pricing-chip">Monthly Support</span>
+            <h3 class="pricing-title">Growth Retainer</h3>
+            <p class="pricing-text">For stores that want ongoing iteration, CRO updates, launch pages, and high-quality dev support each month.</p>
+            <div class="pricing-price">
+              <strong>$650</strong>
+              <span>/ month</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Monthly design and development support</li>
+              <li>Section enhancements and split-test prep</li>
+              <li>Conversion-led improvement cycles</li>
+              <li>Priority communication and execution</li>
+            </ul>
+            <a class="btn btn-secondary" href="#contact">Ask About Retainer</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="testimonials">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Testimonials</span>
+          <h2 class="section-title">What Clients Say</h2>
+          <p class="section-subtitle">High-end Shopify work needs more than clean code. It needs communication, judgment, speed, and design maturity that clients can actually feel during the project.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="card testimonial-card reveal">
+            <span class="quote-mark">“</span>
+            <div class="testimonial-stars" aria-label="5 star rating">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <p class="testimonial-text">OOMIFY completely transformed our Shopify experience. The new store felt premium immediately, loaded better, and started converting stronger within the first few weeks.</p>
+            <h3 class="testimonial-name">Sarah Mitchell</h3>
+            <p class="testimonial-role">Founder, LuxeWear Co.</p>
+          </article>
+          <article class="card testimonial-card reveal">
+            <span class="quote-mark">“</span>
+            <div class="testimonial-stars" aria-label="5 star rating">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <p class="testimonial-text">From strategy to launch, everything was organized and thoughtful. We needed more than a theme edit. We needed a stronger buying experience, and that is exactly what we got.</p>
+            <h3 class="testimonial-name">Daniel Reyes</h3>
+            <p class="testimonial-role">CEO, NovaSkin</p>
+          </article>
+          <article class="card testimonial-card reveal">
+            <span class="quote-mark">“</span>
+            <div class="testimonial-stars" aria-label="5 star rating">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <p class="testimonial-text">The quality of execution was top-tier. OOMIFY brought design clarity, dev depth, and CRO thinking together in one Shopify build that finally matched our brand position.</p>
+            <h3 class="testimonial-name">Emily Carter</h3>
+            <p class="testimonial-role">Marketing Lead, GlowCraft</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">FAQ</span>
+          <h2 class="section-title">Questions clients usually ask before starting</h2>
+          <p class="section-subtitle">This is another added section that makes the page feel more complete and helps remove buying friction before a lead reaches out.</p>
+        </div>
+
+        <div class="faq-grid reveal">
+          <details class="faq-item" open>
+            <summary>
+              <span>Can you work on an existing Shopify theme instead of building from scratch?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">Yes. I can refine an existing theme, rebuild key sections, improve the homepage and product flow, or fully redesign the store depending on what will create the strongest outcome.</div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span>Can you add premium motion without making the store feel heavy?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">Yes. The goal is refined motion, not noise. Animations are used to improve perception, hierarchy, and presentation while keeping performance in mind.</div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span>Do you also help with CRO and page structure, not just visuals?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">Yes. Layout decisions are made around offer clarity, trust signals, content flow, and buying momentum. Good design without conversion thinking is incomplete.</div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span>What kind of businesses are the best fit for this style of build?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">Premium DTC brands, product-led startups, beauty, fashion, wellness, accessories, lifestyle brands, and any store that wants to move upmarket visually while improving performance.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <div class="cta-content">
+            <h2 class="cta-title">Ready to scale your Shopify store with something that actually feels premium?</h2>
+            <p class="cta-text">This updated version now has extra depth, stronger storytelling, and a modern animation layer. If you want, the same standard can be applied to your actual client-facing portfolio or Shopify landing pages.</p>
+            <div class="btn-row btn-row-center">
+              <a class="btn btn-primary" href="#contact">Start Your Project →</a>
+              <a class="btn btn-secondary" href="#portfolio">View My Work</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer section" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="#home">OOMIFY</a>
+          <p class="footer-copy">Premium Shopify design and development for ambitious e-commerce brands that want stronger conversion, sharper presentation, and a better buying experience.</p>
+          <div class="social-row" aria-label="Social links">
+            <a class="social-link" href="#" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.58 2 12.22C2 16.73 4.87 20.56 8.84 21.9C9.34 21.99 9.52 21.68 9.52 21.42V19.79C6.73 20.41 6.14 18.59 6.14 18.59C5.68 17.39 5 17.07 5 17.07C4.07 16.42 5.07 16.44 5.07 16.44C6.1 16.52 6.64 17.53 6.64 17.53C7.55 19.14 9.03 18.67 9.62 18.39C9.71 17.72 9.97 17.26 10.25 17C8.02 16.74 5.68 15.85 5.68 11.86C5.68 10.72 6.08 9.79 6.73 9.05C6.62 8.79 6.28 7.72 6.83 6.28C6.83 6.28 7.7 5.99 9.49 7.24C10.31 7.01 11.18 6.9 12.05 6.9C12.92 6.9 13.79 7.01 14.61 7.24C16.4 5.99 17.27 6.28 17.27 6.28C17.82 7.72 17.48 8.79 17.37 9.05C18.02 9.79 18.42 10.72 18.42 11.86C18.42 15.86 16.08 16.73 13.85 16.99C14.2 17.31 14.5 17.94 14.5 18.92V21.42C14.5 21.68 14.68 21.99 15.19 21.89C19.15 20.55 22 16.72 22 12.22C22 6.58 17.52 2 12 2Z" fill="currentColor"/>
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M6.94 8.5H3.56V20H6.94V8.5Z" fill="currentColor"/>
+                <path d="M5.25 7C6.37 7 7.28 6.08 7.28 4.95C7.28 3.82 6.37 2.9 5.25 2.9C4.12 2.9 3.2 3.82 3.2 4.95C3.2 6.08 4.12 7 5.25 7Z" fill="currentColor"/>
+                <path d="M20.8 13.04C20.8 9.62 18.98 8.03 16.56 8.03C14.61 8.03 13.74 9.12 13.25 9.89V8.5H10V20H13.38V13.6C13.38 12.68 13.55 11.79 14.68 11.79C15.8 11.79 15.82 12.84 15.82 13.66V20H19.2V12.99C19.2 13.02 20.8 13.04 20.8 13.04Z" fill="currentColor"/>
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M18.9 3H21.97L15.27 10.64L23.15 21H16.98L12.14 14.72L6.64 21H3.57L10.73 12.82L3.17 3H9.5L13.88 8.73L18.9 3ZM17.82 19.14H19.52L8.58 4.77H6.75L17.82 19.14Z" fill="currentColor"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <nav class="footer-list" aria-label="Footer quick links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Services</h3>
+          <div class="footer-list">
+            <a href="#services">Store Design</a>
+            <a href="#services">Custom Development</a>
+            <a href="#services">CRO</a>
+            <a href="#services">Migrations</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="footer-title">Contact</h3>
+          <div class="footer-list">
+            <a class="footer-contact" href="mailto:email@oomify.com">email@oomify.com</a>
+            <p class="footer-location">Working worldwide for ambitious Shopify brands</p>
+            <p class="footer-note">Fast replies, focused process, premium execution.</p>
+          </div>
+          <div class="availability">
+            <span class="availability-dot" aria-hidden="true"></span>
+            Open to Projects
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 OOMIFY. All rights reserved.</p>
+        <p>Built with motion, depth, and Shopify focus by OOMIFY.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <script>
+    if (window.gsap) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.set('.split-reveal', { y: 34, opacity: 0 });
+      gsap.to('.split-reveal', {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.12,
+        delay: 0.12
+      });
+
+      gsap.utils.toArray('.reveal').forEach((item, index) => {
+        gsap.fromTo(item, {
+          y: 42,
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          delay: index % 3 * 0.03,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 86%'
+          }
+        });
+      });
+
+      gsap.to('.hero-stage-glow', {
+        scale: 1.12,
+        opacity: 0.62,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        duration: 3.6
+      });
+
+      gsap.to('.hero-dot', {
+        y: -14,
+        repeat: -1,
+        yoyo: true,
+        duration: 2.2,
+        ease: 'sine.inOut'
+      });
+
+      gsap.to('.hero-dot-alt', {
+        y: 12,
+        repeat: -1,
+        yoyo: true,
+        duration: 2.8,
+        ease: 'sine.inOut'
+      });
+
+      gsap.to('.chip-one', {
+        y: -18,
+        repeat: -1,
+        yoyo: true,
+        duration: 2.8,
+        ease: 'sine.inOut'
+      });
+
+      gsap.to('.chip-two', {
+        y: 16,
+        repeat: -1,
+        yoyo: true,
+        duration: 3.2,
+        ease: 'sine.inOut'
+      });
+
+      gsap.to('.chart-fill', {
+        scaleX: 1,
+        duration: 1.2,
+        ease: 'power3.out',
+        stagger: 0.14,
+        scrollTrigger: {
+          trigger: '.hero-dashboard',
+          start: 'top 82%'
+        }
+      });
+
+      gsap.to('.orbit-ring.one', {
+        rotateZ: 360,
+        duration: 22,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      gsap.to('.orbit-ring.two', {
+        rotateZ: -360,
+        duration: 18,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      gsap.to('.orbit-ring.three', {
+        rotateZ: 360,
+        duration: 14,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      gsap.to('.orbit-pill.one', { yPercent: -10, repeat: -1, yoyo: true, duration: 2.4, ease: 'sine.inOut' });
+      gsap.to('.orbit-pill.two', { xPercent: 8, repeat: -1, yoyo: true, duration: 2.8, ease: 'sine.inOut' });
+      gsap.to('.orbit-pill.three', { yPercent: 10, repeat: -1, yoyo: true, duration: 2.6, ease: 'sine.inOut' });
+      gsap.to('.orbit-pill.four', { xPercent: -8, repeat: -1, yoyo: true, duration: 2.8, ease: 'sine.inOut' });
+      gsap.to('.orbit-pill.five', { yPercent: -8, repeat: -1, yoyo: true, duration: 2.5, ease: 'sine.inOut' });
+      gsap.to('.orbit-pill.six', { yPercent: 8, repeat: -1, yoyo: true, duration: 2.7, ease: 'sine.inOut' });
+
+      gsap.utils.toArray('.counter').forEach((counter) => {
+        const target = Number(counter.dataset.target || 0);
+        const prefix = counter.dataset.prefix || '';
+        const suffix = counter.dataset.suffix || '';
+        const obj = { value: 0 };
+
+        ScrollTrigger.create({
+          trigger: counter,
+          start: 'top 88%',
+          once: true,
+          onEnter: () => {
+            gsap.to(obj, {
+              value: target,
+              duration: 1.6,
+              ease: 'power2.out',
+              onUpdate: () => {
+                const current = target > 10 ? Math.round(obj.value) : obj.value.toFixed(target % 1 === 0 ? 0 : 1);
+                counter.textContent = prefix + current + suffix;
+              }
+            });
+          }
+        });
+      });
+
+      gsap.utils.toArray('.tilt-card').forEach((card) => {
+        let xTo = gsap.quickTo(card, 'rotationY', { duration: 0.45, ease: 'power3.out' });
+        let yTo = gsap.quickTo(card, 'rotationX', { duration: 0.45, ease: 'power3.out' });
+        let zTo = gsap.quickTo(card, 'z', { duration: 0.45, ease: 'power3.out' });
+
+        card.addEventListener('mousemove', (event) => {
+          const rect = card.getBoundingClientRect();
+          const px = (event.clientX - rect.left) / rect.width;
+          const py = (event.clientY - rect.top) / rect.height;
+          const ry = (px - 0.5) * 12;
+          const rx = (0.5 - py) * 12;
+          xTo(ry);
+          yTo(rx);
+          zTo(10);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          xTo(0);
+          yTo(0);
+          zTo(0);
+        });
+      });
+
+      const parallaxScenes = document.querySelectorAll('.hero-stage');
+      parallaxScenes.forEach((scene) => {
+        const layers = scene.querySelectorAll('[data-depth]');
+        const moveLayers = (clientX, clientY) => {
+          const rect = scene.getBoundingClientRect();
+          const relX = (clientX - rect.left) / rect.width - 0.5;
+          const relY = (clientY - rect.top) / rect.height - 0.5;
+          layers.forEach((layer) => {
+            const depth = Number(layer.dataset.depth || 0.1);
+            gsap.to(layer, {
+              x: relX * depth * 90,
+              y: relY * depth * 70,
+              duration: 0.7,
+              ease: 'power3.out'
+            });
+          });
+        };
+
+        scene.addEventListener('mousemove', (event) => moveLayers(event.clientX, event.clientY));
+        scene.addEventListener('mouseleave', () => {
+          layers.forEach((layer) => {
+            gsap.to(layer, { x: 0, y: 0, duration: 0.7, ease: 'power3.out' });
+          });
+        });
+      });
+
+      gsap.utils.toArray('.case-visual, .compare-visual, .orbit-scene').forEach((scene) => {
+        gsap.fromTo(scene, {
+          y: 40,
+          rotateX: 8
+        }, {
+          y: 0,
+          rotateX: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: scene,
+            start: 'top 85%'
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
